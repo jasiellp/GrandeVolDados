@@ -10,6 +10,8 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+
 import java.awt.Color;
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
@@ -53,9 +55,19 @@ public class Frame extends JFrame
 
 	/**
 	 * Create the frame.
+	 * @throws UnsupportedLookAndFeelException 
+	 * @throws IllegalAccessException 
+	 * @throws InstantiationException 
+	 * @throws ClassNotFoundException 
 	 */
-	public Frame()
+	public Frame() throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException
 	{
+		 //inclusao de tema para a tela ficar preta
+		String tema = "com.jtattoo.plaf.hifi.HiFiLookAndFeel";
+					  // “com.jtattoo.plaf.luna.LunaLookAndFeel” azul
+					  // “com.jtattoo.plaf.mcwin.McWinLookAndFeel” aluminio
+        // AQUI VC SETA O LOOK AND FEEL
+        UIManager.setLookAndFeel(tema);
 		this.setTitle("Grande Volume de Dados");
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage(Frame.class.getResource("/com/grande/volume/dados/olx/icon/v.png")));
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
