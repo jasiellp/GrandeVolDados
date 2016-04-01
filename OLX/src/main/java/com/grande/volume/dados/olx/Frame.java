@@ -63,7 +63,7 @@ public class Frame extends JFrame
 	public Frame() throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException
 	{
 		 //inclusao de tema para a tela ficar preta
-		String tema = "com.jtattoo.plaf.hifi.HiFiLookAndFeel";
+		String tema = "com.jtattoo.plaf.luna.LunaLookAndFeel";
 					  // “com.jtattoo.plaf.luna.LunaLookAndFeel” azul
 					  // “com.jtattoo.plaf.mcwin.McWinLookAndFeel” aluminio
         // AQUI VC SETA O LOOK AND FEEL
