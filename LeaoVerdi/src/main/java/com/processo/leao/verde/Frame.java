@@ -1,23 +1,24 @@
 package com.processo.leao.verde;
 import java.awt.EventQueue;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JMenuBar;
-import javax.swing.JMenu;
-import javax.swing.JCheckBoxMenuItem;
-import javax.swing.border.TitledBorder;
-import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.JButton;
 import javax.swing.ImageIcon;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import javax.swing.JButton;
+import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JPanel;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.UIManager;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.TitledBorder;
+
+import com.processo.leao.verde.util.LVLog;
 
 public class Frame extends JFrame
 {
@@ -85,19 +86,18 @@ public class Frame extends JFrame
 
 	/**
 	 * Create the frame.
-	 * @throws UnsupportedLookAndFeelException 
-	 * @throws IllegalAccessException 
-	 * @throws InstantiationException 
-	 * @throws ClassNotFoundException 
+	 * @throws Exception 
 	 */
-	public Frame() throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException 
+	public Frame() throws Exception 
 	{
 		this.setTitle("Desktop");
 		
+		LVLog.NovoLog("Frame Estatistico", "NSU");
 		
 		UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 		 
-	this.setIconImage(Toolkit.getDefaultToolkit().getImage(Frame.class.getResource(CAMINHO.concat("/v.png"))));
+	
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage(Frame.class.getResource(CAMINHO.concat("/v.png"))));
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setBounds(100, 100, 561, 494);
 		
@@ -168,6 +168,22 @@ public class Frame extends JFrame
 		this.button_Iniciar.setIcon(new ImageIcon(Frame.class.getResource(CAMINHO.concat("/iniciar.png"))));
 		
 		this.button_config = new JButton(this.VAZIO);
+		this.button_config.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e) 
+			{ 
+				try
+				{
+					new Config(null) .setVisible(true);
+				}
+				catch (Exception e1)
+				{ 
+					 
+						e1.printStackTrace();
+					 
+				}
+			}
+		});
 		this.button_config.setIcon(new ImageIcon(Frame.class.getResource(CAMINHO.concat("/config.png"))));
 		
 		this.button_5 = new JButton("   ");
@@ -190,70 +206,67 @@ public class Frame extends JFrame
 		
 		this.button_14 = new JButton("   ");
 		this.gl_panel_2 = new GroupLayout(this.panel_2);
-		this.gl_panel_2.setHorizontalGroup(
-				this.gl_panel_2.createParallelGroup(Alignment.LEADING)
-				.addGroup(this.gl_panel_2.createSequentialGroup()
+		gl_panel_2.setHorizontalGroup(
+			gl_panel_2.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel_2.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(this.gl_panel_2.createParallelGroup(Alignment.TRAILING)
-						.addGroup(this.gl_panel_2.createSequentialGroup()
-							.addComponent(this.button_relatorio, 	this.PREFERRED_SIZE, 90, this.PREFERRED_SIZE)
+					.addGroup(gl_panel_2.createParallelGroup(Alignment.TRAILING, false)
+						.addGroup(Alignment.LEADING, gl_panel_2.createSequentialGroup()
+							.addComponent(button_5, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(this.button_categoria, 	this.PREFERRED_SIZE, 90, this.PREFERRED_SIZE)
+							.addComponent(button_6, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(this.btnCadastroProcesso, this.PREFERRED_SIZE, 90, this.PREFERRED_SIZE)
+							.addComponent(button_7, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(this.button_Iniciar, 		this.PREFERRED_SIZE, 90, this.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(this.button_config, 		this.PREFERRED_SIZE, 83, this.PREFERRED_SIZE)
-							.addGap(18))
-						.addGroup(this.gl_panel_2.createSequentialGroup()
-							.addComponent(this.button_10, this.PREFERRED_SIZE, 90, this.PREFERRED_SIZE)
-							.addGap(6)
-							.addComponent(this.button_11, this.PREFERRED_SIZE, 90, this.PREFERRED_SIZE)
-							.addGap(10)
-							.addComponent(this.button_12, this.PREFERRED_SIZE, 90, this.PREFERRED_SIZE)
-							.addGap(10)
-							.addComponent(this.button_13, this.PREFERRED_SIZE, 90, this.PREFERRED_SIZE)
-							.addGap(10)
-							.addComponent(this.button_14, this.PREFERRED_SIZE, 90, this.PREFERRED_SIZE)
-							.addContainerGap())
-						.addGroup(this.gl_panel_2.createSequentialGroup()
-							.addComponent(this.button_5, this.PREFERRED_SIZE, 90, this.PREFERRED_SIZE)
+							.addComponent(button_8, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addComponent(button_9, GroupLayout.PREFERRED_SIZE, 82, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_panel_2.createSequentialGroup()
+							.addComponent(button_10, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(this.button_6, this.PREFERRED_SIZE, 90, this.PREFERRED_SIZE)
+							.addComponent(button_11, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(this.button_7, this.PREFERRED_SIZE, 90, this.PREFERRED_SIZE)
+							.addComponent(button_12, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE)
+							.addGap(10)
+							.addComponent(button_13, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE)
+							.addGap(10)
+							.addComponent(button_14, GroupLayout.PREFERRED_SIZE, 82, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_panel_2.createSequentialGroup()
+							.addComponent(button_relatorio, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(button_categoria, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(this.button_8, this.PREFERRED_SIZE, 90, this.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
-							.addComponent(this.button_9, this.PREFERRED_SIZE, 90, this.PREFERRED_SIZE)
-							.addContainerGap())))
+							.addComponent(btnCadastroProcesso, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(button_Iniciar, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(button_config, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)))
+					.addGap(18))
 		);
-		
-		this.gl_panel_2.setVerticalGroup(
-				this.gl_panel_2.createParallelGroup(Alignment.LEADING)
-				.addGroup(this.gl_panel_2.createSequentialGroup()
+		gl_panel_2.setVerticalGroup(
+			gl_panel_2.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel_2.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(this.gl_panel_2.createParallelGroup(Alignment.LEADING)
-						.addComponent(this.button_Iniciar, this.PREFERRED_SIZE, 80, this.PREFERRED_SIZE)
-						.addComponent(this.btnCadastroProcesso, this.PREFERRED_SIZE, 80, this.PREFERRED_SIZE)
-						.addComponent(this.button_categoria, this.PREFERRED_SIZE, 80, this.PREFERRED_SIZE)
-						.addComponent(this.button_relatorio, this.PREFERRED_SIZE, 80, this.PREFERRED_SIZE)
-						.addComponent(this.button_config, this.PREFERRED_SIZE, 80, this.PREFERRED_SIZE))
+					.addGroup(gl_panel_2.createParallelGroup(Alignment.LEADING)
+						.addComponent(button_Iniciar, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnCadastroProcesso, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE)
+						.addComponent(button_categoria, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE)
+						.addComponent(button_relatorio, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE)
+						.addComponent(button_config, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE))
 					.addGap(18)
-					.addGroup(this.gl_panel_2.createParallelGroup(Alignment.LEADING)
-						.addComponent(this.button_10, this.PREFERRED_SIZE, 80, this.PREFERRED_SIZE)
-						.addComponent(this.button_11, this.PREFERRED_SIZE, 80, this.PREFERRED_SIZE)
-						.addComponent(this.button_12, this.PREFERRED_SIZE, 80, this.PREFERRED_SIZE)
-						.addComponent(this.button_13, this.PREFERRED_SIZE, 80, this.PREFERRED_SIZE)
-						.addComponent(this.button_14, this.PREFERRED_SIZE, 80, this.PREFERRED_SIZE))
+					.addGroup(gl_panel_2.createParallelGroup(Alignment.LEADING)
+						.addComponent(button_10, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE)
+						.addComponent(button_12, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE)
+						.addComponent(button_13, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE)
+						.addComponent(button_11, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE)
+						.addComponent(button_14, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE))
 					.addGap(18)
-					.addGroup(this.gl_panel_2.createParallelGroup(Alignment.BASELINE)
-						.addComponent(this.button_5, this.PREFERRED_SIZE, 80, this.PREFERRED_SIZE)
-						.addComponent(this.button_6, this.PREFERRED_SIZE, 80, this.PREFERRED_SIZE)
-						.addComponent(this.button_7, this.PREFERRED_SIZE, 80, this.PREFERRED_SIZE)
-						.addComponent(this.button_8, this.PREFERRED_SIZE, 80, this.PREFERRED_SIZE)
-						.addComponent(this.button_9, this.PREFERRED_SIZE, 80, this.PREFERRED_SIZE))
+					.addGroup(gl_panel_2.createParallelGroup(Alignment.BASELINE)
+						.addComponent(button_5, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE)
+						.addComponent(button_6, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE)
+						.addComponent(button_7, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE)
+						.addComponent(button_8, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE)
+						.addComponent(button_9, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE))
 					.addContainerGap(20, Short.MAX_VALUE))
 		);
 		
