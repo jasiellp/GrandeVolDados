@@ -38,5 +38,9 @@
 	<classpathentry kind="lib" path="C:/eclipse/plugins/org.eclipse.core.databinding_1.5.0.v20150422-0725.jar" sourcepath="C:/eclipse/plugins/org.eclipse.core.databinding_1.5.0.v20150422-0725.jar"/>
 	<classpathentry kind="lib" path="C:/eclipse/plugins/org.eclipse.core.databinding.observable_1.5.0.v20150422-0725.jar" sourcepath="C:/eclipse/plugins/org.eclipse.core.databinding.observable_1.5.0.v20150422-0725.jar"/>
 	<classpathentry kind="lib" path="C:/eclipse/plugins/org.eclipse.jface.databinding_1.7.0.v20150406-2148.jar" sourcepath="C:/eclipse/plugins/org.eclipse.jface.databinding_1.7.0.v20150406-2148.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/camera_jp1"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/captura"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/LeaoVerdi"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/Valida_Entrada"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

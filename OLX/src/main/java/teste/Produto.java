@@ -62,6 +62,61 @@ public class Produto
 
 
 	private double 	valor;
+	public void setValor(double valor)
+	{
+		this.valor = valor;
+	}
+
+
+
+	public void setData_anuncio(Date data_anuncio)
+	{
+		this.data_anuncio = data_anuncio;
+	}
+
+
+
+	public void setLink(String link)
+	{
+		this.link = link;
+	}
+
+
+
+	public void setTipo_produto(String tipo_produto)
+	{
+		this.tipo_produto = tipo_produto;
+	}
+
+
+
+	public void setTitulo(String titulo)
+	{
+		this.titulo = titulo;
+	}
+
+
+
+	public void setDescricao(String descricao)
+	{
+		this.descricao = descricao;
+	}
+
+
+
+	public void setFoto(String foto)
+	{
+		this.foto = foto;
+	}
+
+
+
+	public void setContato(String contato)
+	{
+		this.contato = contato;
+	}
+
+
 	private Date 	data_anuncio;
 	private String	link;
 	private String  tipo_produto;
@@ -72,9 +127,8 @@ public class Produto
 	
 	
 	
-	public Produto(Object obj)
+	public Produto()
 	{
-		this.descricao=obj.toString();
 		
 	}
 	

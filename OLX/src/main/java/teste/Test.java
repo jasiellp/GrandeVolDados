@@ -6,13 +6,14 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
+
+import com.processo.leao.verde.util.DBLeao;
 
 public class Test
 {
@@ -34,45 +35,88 @@ public class Test
 
 		BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
 
-		String line = "";
+		String linha = "";
 
-		BufferedWriter buffWrite = new BufferedWriter(
-				new FileWriter("C:\\Git_Home\\gd\\OLX\\src\\main\\java\\teste\\NewFile.html"));
+		BufferedWriter buffWrite = new BufferedWriter( new FileWriter("C:\\Git_Home\\gd\\OLX\\src\\main\\java\\teste\\NewFile.html"));
 		ArrayList<Produto> list = new ArrayList<Produto>();
-		boolean inicio = false;
-		StringBuffer sb = new StringBuffer();
-		while ((line = rd.readLine()) != null)
+		ArrayList<String> buf = new ArrayList<String>();
+		
+		
+		while ((linha = rd.readLine()) != null)
 		{
-
-			if (line.contains("<li class=\"item\">")) inicio = true;
-			if (inicio) sb.append(line.concat(" \n"));
-			if (line.contains("</li>"))
+			buf.add(linha.concat(" \n")); 
+		}
+		buffWrite.close();
+		String link,valor,titulo;
+		
+		
+		for (int i = 0; i < buf.size(); i++)
+		{	
+			if(buf.get(i).contains("<li class=\"item\">") &&  buf.get(i+1).contains("OLXad-list-link") )	
 			{
-				inicio = false;
-				list.add(new Produto(sb));
-				sb.delete(0, sb.length());
+				Produto p = new Produto();
+				 
+				valor  = buf.get(i+1).substring(162, buf.get(i+1).length());
+				link   = valor.split("title")[0];
+			//	link   = link.substring(0, link.length()-2);
+				titulo = valor.split("title")[1];
+				 
+				
+				
+				p.setLink(link.substring(0, link.length()));
+				p.setTitulo(titulo.substring(2, titulo.length()-4));
+				
+				list.add(p);
 			}
-
+			
 		}
 		
+		buf.clear();
+		 
 		for(Produto p : list )
 		{
-			System.out.println(p.getDescricao());	
+			System.out.println(p.getLink());	
+			
+			System.out.println(p.getTitulo());
+			
+			//insert(p);
 		}
 
+		list.clear();
 		
-		buffWrite.close();
-	}
-
-	public static void escritor(String path) throws IOException
+	
+	} 
+	
+	
+	private static void insert(Produto p)
 	{
-		BufferedWriter buffWrite = new BufferedWriter(new FileWriter(path));
-		String linha = "";
-		Scanner in = new Scanner(System.in);
-		System.out.println("Escreva algo: ");
-		linha = in.nextLine();
-		buffWrite.append(linha + "\n");
-		buffWrite.close();
+		StringBuffer d = new StringBuffer();
+		 
+		
+		d.append(" INSERT INTO ").append(" \n"); 
+		d.append(" `produto`  ").append(" \n");
+		d.append("  (`id_produto`, `data_anuncio`, `link`, `tipo_produto`, `titulo`, `descricao`, `foto`, `contato`) ").append(" \n"); 
+		d.append("  VALUES  ").append(" \n");
+		d.append("  (0,  ").append(" \n");
+		d.append("  '2016-04-14 22:02:32', ").append(" \n"); 
+		d.append("  '").append(p.getLink()).append("',  ").append(" \n");
+		d.append("  '2',  ").append(" \n");
+		d.append("  '").append(p.getTitulo()).append("',  ").append(" \n");
+		d.append("  '22',  ").append(" \n");
+		d.append("  '22',  ").append(" \n");
+		d.append("  '22'); ").append(" \n");
+
+		try
+		{
+			DBLeao.Insert(d);
+			System.out.println("Sucesso");
+		}
+		catch (Exception e)
+		{
+				System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
+		
 	}
 
 }
