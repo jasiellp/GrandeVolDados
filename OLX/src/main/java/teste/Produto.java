@@ -1,10 +1,23 @@
 package teste;
 
-import java.util.Date;
-
 public class Produto
 {
 
+	
+	private double 	valor;
+	private String 	data_anuncio;
+	private String	link;
+	private String  tipo_produto;
+	private String  titulo;
+	private String  imagem; 
+	private String  descricao;
+	private String  foto;
+	private String  contato;
+	private String  identificador;
+	private String  estado;
+	private String  cidade;
+	private String  ddd;
+	private String  categoria;
 	
 	public double getValor()
 	{
@@ -13,7 +26,7 @@ public class Produto
 
 
 
-	public Date getData_anuncio()
+	public String getData_anuncio()
 	{
 		return data_anuncio;
 	}
@@ -22,7 +35,7 @@ public class Produto
 
 	public String getLink()
 	{
-		return link;
+		return link.replaceAll("\"", "");
 	}
 
 
@@ -61,7 +74,7 @@ public class Produto
 	}
 
 
-	private double 	valor;
+
 	public void setValor(double valor)
 	{
 		this.valor = valor;
@@ -69,7 +82,7 @@ public class Produto
 
 
 
-	public void setData_anuncio(Date data_anuncio)
+	public void setData_anuncio(String data_anuncio)
 	{
 		this.data_anuncio = data_anuncio;
 	}
@@ -78,7 +91,24 @@ public class Produto
 
 	public void setLink(String link)
 	{
-		this.link = link;
+		this.link = link.trim();
+		this.identificador=link.substring((this.link.length()-9),this.link.length());	
+	}
+
+	public void setEstado(String estado){
+		this.estado=estado;
+	}
+
+	public String getIdentificador()
+	{
+		return identificador.replaceAll("\"", "");
+	}
+
+
+
+	public void setIdentificador(String identificador)
+	{
+		this.identificador = identificador;
 	}
 
 
@@ -117,16 +147,72 @@ public class Produto
 	}
 
 
-	private Date 	data_anuncio;
-	private String	link;
-	private String  tipo_produto;
-	private String  titulo;
-	private String  descricao;
-	private String  foto;
-	private String  contato;
 	
 	
+	public String getImagem()
+	{
+		return imagem;
+	}
+
+
+
+	public void setImagem(String imagem)
+	{
+		this.imagem = imagem;
+	}
+
+
 	
+	
+	public String getCategoria()
+	{
+		return categoria;
+	}
+
+
+
+	public void setCategoria(String categoria)
+	{
+		this.categoria = categoria;
+	}
+
+
+
+	public String getDdd()
+	{
+		return ddd;
+	}
+
+
+
+	public void setDdd(String ddd)
+	{
+		this.ddd = ddd;
+	}
+
+
+
+	public String getCidade()
+	{
+		return cidade;
+	}
+
+
+
+	public void setCidade(String cidade)
+	{
+		this.cidade = cidade;
+	}
+
+
+
+	public String getEstado()
+	{
+		return estado;
+	}
+
+
+
 	public Produto()
 	{
 		
