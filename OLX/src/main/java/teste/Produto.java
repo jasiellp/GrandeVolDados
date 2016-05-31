@@ -34,8 +34,8 @@ public class Produto
 
 
 	public String getLink()
-	{
-		return link.replaceAll("\"", "");
+	{ 
+		return "http://sp.olx.com.br".concat(link.replaceAll("\"", "").split("sp.olx.com.br")[1]);
 	}
 
 
@@ -108,7 +108,7 @@ public class Produto
 
 	public void setIdentificador(String identificador)
 	{
-		this.identificador = identificador;
+		this.identificador = identificador.replaceAll("-", "");
 	}
 
 

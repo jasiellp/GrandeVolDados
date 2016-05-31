@@ -1,8 +1,6 @@
 package teste;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
+import java.io.BufferedReader; 
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
@@ -17,7 +15,40 @@ import org.apache.http.impl.client.HttpClientBuilder;
 
 import com.processo.leao.verde.util.DBLeao;
 
-public class Test_teste1
+
+
+
+/***
+ * 
+ * @author CPQi
+ *
+ *
+ *
+ *create table produtos
+(
+		id_produto 			int,
+		identificador 		varchar(190) NOT NULL PRIMARY KEY,
+		valor 				numeric,
+		data_anuncio 		datetime,
+		categoria 			varchar(1290),
+		link 					varchar(1290),
+		tipo_produto 		varchar(290),
+		titulo 				varchar(1290),
+		imagem 				varchar(1290),
+		descricao 			varchar(1290),
+		contato 				varchar(90),
+		estado 				varchar(90),
+		cidade 				varchar(90),
+		ddd 					varchar(10),
+		data_hoje 			datetime,
+		fim 					varchar(10),
+		valor_mercado     numeric
+)
+
+ 
+ */
+
+public class Captacao
 {
 
 	@SuppressWarnings("deprecation")
@@ -38,7 +69,7 @@ public class Test_teste1
 
 		String linha = "";
 
-		BufferedWriter buffWrite = new BufferedWriter( new FileWriter("C:\\Git_Home\\gd\\OLX\\src\\main\\java\\teste\\NewFile.html"));
+		//BufferedWriter buffWrite = new BufferedWriter( new FileWriter(testefeliz.class.getResource("").getFile().toString().concat("NewFile.html")));
 		ArrayList<Produto> list = new ArrayList<Produto>();
 		ArrayList<String> buf = new ArrayList<String>();
 		
@@ -46,10 +77,10 @@ public class Test_teste1
 		while ((linha = rd.readLine()) != null)
 		{
 			buf.add(linha.concat(" \n")); 
-			buffWrite.append(linha.concat(" \n"));
+		//	buffWrite.append(linha.concat(" \n"));
 		}
 		
-		buffWrite.close();
+		//buffWrite.close();
 		
 		String link 		= null,
 			titulo 			= null, 
@@ -159,7 +190,7 @@ public class Test_teste1
 					date.setHours(Integer.parseInt(hora.substring(0, 2)));
 					date.setMinutes(Integer.parseInt(hora.substring(3, 5)));
 					
-					formato_data.format(date);
+					 
 					
 					if(data.equalsIgnoreCase("HOJE"))
 					{
@@ -223,18 +254,19 @@ if(data.equals("Hoje"))
 		
 	}
 	
-	public static void main(String[] args) throws ClientProtocolException, IOException
+	
+	public static void executar(int inicio,int fim) throws ClientProtocolException, IOException
 	{
-
-		
-		String url = "http://sp.olx.com.br/";
-		//"http://sp.olx.com.br/?o=2"
-		consulta(url);
-		
-		 
-		for(int i =2; i<=200; i++)
+		for(int i = inicio; i <= fim; i++)
 		{
-			System.out.println("http://sp.olx.com.br/?o=".concat(String.valueOf(i)));
+			consulta("http://sp.olx.com.br/?o=".concat(String.valueOf(i)));
+		} 
+	}
+	
+	public static void main(String[] args) throws ClientProtocolException, IOException
+	{		
+		for(int i =2; i <= 800; i++)
+		{
 			consulta("http://sp.olx.com.br/?o=".concat(String.valueOf(i)));
 		} 
 	} 
@@ -249,7 +281,7 @@ if(data.equals("Hoje"))
 		d.append("  INSERT INTO `produtos` ").append(" \n "); 
 		d.append(" (`id_produto`, `identificador`, `valor`, `data_anuncio`, `categoria`, `link`, ").append(" \n "); 
 		d.append(" `tipo_produto`, `titulo`, `imagem`, `descricao`, `contato`, `estado`,  ").append(" \n ");
-		d.append("  `cidade`, `ddd`)  ").append(" \n ");
+		d.append("  `cidade`, `ddd`,`fim`)  ").append(" \n ");
 		d.append(" 	VALUES (0,  ").append(" \n ");
 		d.append(" '").append(p.getIdentificador()).append("',   ").append(" \n ");
 		d.append("  ").append(p.getValor()).append(",  ").append(" \n "); 
@@ -263,7 +295,7 @@ if(data.equals("Hoje"))
 		d.append("  'zzz',   ").append(" \n ");
 		d.append("  '").append(p.getEstado()).append("',   ").append(" \n ");
 		d.append("  '").append(p.getCidade()).append("',   ").append(" \n ");
-		d.append("  '").append(p.getDdd()).append("');  ").append(" \n ");
+		d.append("  '").append(p.getDdd()).append("','Nao');  ").append(" \n ");
 
 		try
 		{
