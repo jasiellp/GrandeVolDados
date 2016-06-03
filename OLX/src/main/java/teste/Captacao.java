@@ -200,8 +200,9 @@ public class Captacao
 					
 				 
 				}
-if(data.equals("Hoje"))
-	System.out.println(data);
+				
+				if(data.equals("Hoje"))
+						System.out.println(data);
 
 
 
@@ -232,7 +233,7 @@ if(data.equals("Hoje"))
 			
 				p.setLink(link);
 				p.setTitulo(titulo);
-				p.setImagem(imagem);
+				p.setImagem(imagem.replaceAll("src=", ""));
 				list.add(p);
 				sb_temp.clear();
 			}
@@ -282,7 +283,7 @@ if(data.equals("Hoje"))
 		d.append(" (`id_produto`, `identificador`, `valor`, `data_anuncio`, `categoria`, `link`, ").append(" \n "); 
 		d.append(" `tipo_produto`, `titulo`, `imagem`, `descricao`, `contato`, `estado`,  ").append(" \n ");
 		d.append("  `cidade`, `ddd`,`fim`)  ").append(" \n ");
-		d.append(" 	VALUES (0,  ").append(" \n ");
+		d.append(" 	VALUES ((select nextval('MovieSeq') ),  ").append(" \n ");
 		d.append(" '").append(p.getIdentificador()).append("',   ").append(" \n ");
 		d.append("  ").append(p.getValor()).append(",  ").append(" \n "); 
 		d.append("  '").append(p.getData_anuncio()).append("',   ").append(" \n ");

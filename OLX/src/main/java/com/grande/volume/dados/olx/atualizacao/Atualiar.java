@@ -1,4 +1,4 @@
-package com.piloto;
+package com.grande.volume.dados.olx.atualizacao;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -30,7 +30,7 @@ import com.processo.leao.verde.util.DBLeao;
  *         )
  */
 
-public class conSu {
+public class Atualiar {
  
 	public static void consulta(String url, String identificador,String titulo) throws ClientProtocolException, IOException 
 	{
@@ -47,12 +47,14 @@ public class conSu {
 
 		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
 
+		
+		
 		BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
 		 
 		String linha = "";
 		
 		boolean fim = false;
-		
+		int count = 0;
 		while ((linha = rd.readLine()) != null) 
 		{ 
 			if(linha.contains("foi vendido e o anunciante removeu o anúncio."))
@@ -65,51 +67,35 @@ public class conSu {
 				fim = false;
 				break;
 			}
+			if(count <= 400)
+				break;
+			
+			count++;
 		} 
 		
-		
+		rd.close();
 		update(fim, identificador, nova_url);
 		
-		rd.close();
+		
 
 	}
 
 	
-	public static void executar() throws Exception
+	public static void executar(int inicio , int fim) throws Exception
 	{
-
-		
-
-		 
-		ResultSet rt  = DBLeao.select("select * from produtos where  fim = 'Nao'");
+		ResultSet rt  = DBLeao.select("select p.identificador, p.link , p.titulo from produtos p where p.id_produto >  ".concat(String.valueOf(inicio)).concat(" and id_produto < ").concat(String.valueOf(fim)));
 		
 		while (rt.next())
 		{
 			System.out.println(rt.getString("identificador"));
-			consulta(rt.getString("link"),rt.getString("identificador"),rt.getString("titulo"));
+			 consulta(rt.getString("link"), rt.getString("identificador"), rt.getString("titulo"));
 		}
 		
 		
 		rt.close();
-
-	}
+		  
+	} 
 	
-	public static void main(String[] args) throws Exception 
-	{
- 
-		ResultSet rt  = DBLeao.select("select * from produtos where  fim = 'Nao'");
-		
-		while (rt.next())
-		{
-			System.out.println(rt.getString("identificador"));
-			consulta(rt.getString("link"),rt.getString("identificador"),rt.getString("titulo"));
-		}
-		
-		
-		rt.close();
-		 
-	}
-
 	private static void update(boolean fim, String identificador,String url ) {
 		 
 	 	
@@ -123,10 +109,13 @@ public class conSu {
 		d.append("',`data_hoje`='").append( new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(date));
 		d.append("' where identificador = '").append(identificador).append("'");
 		
-		try {
+		try 
+		{
 			DBLeao.Insert(d);
 			System.out.println("Sucesso");
-		} catch (Exception e) {
+		} 
+		catch (Exception e) 
+		{
 			System.out.println(e.getMessage());
 			e.printStackTrace();
 		}
