@@ -35,7 +35,7 @@ public class Categoria
 	{
 		ArrayList<Categoria_> categorias_ = new ArrayList<Categoria_>();
 		 
-		ResultSet rs = DBLeao.select("select * from categoria");
+		ResultSet rs = DBLeao.select("select C.ID,C.NOME from categoria c");
 		
 		while (rs.next())
 		{

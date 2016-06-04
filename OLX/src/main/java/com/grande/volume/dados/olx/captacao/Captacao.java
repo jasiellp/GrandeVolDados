@@ -235,7 +235,7 @@ public class Captacao
 				p.setTitulo(titulo);
 				p.setImagem(imagem.replaceAll("src=", ""));
 				
-				if(p.getValor() != 0)
+				if(p.getValor() > 0)
 				{
 						list.add(p);
 				}

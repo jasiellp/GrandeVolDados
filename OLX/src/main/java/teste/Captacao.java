@@ -171,8 +171,6 @@ public class Captacao
 				if(i_imagem>0)
 				{
 					imagem = sb_temp.get(i_imagem).trim().contains("sem foto")?"Sem Foto":sb_temp.get(i_imagem).trim().split("alt")[0].substring(24,sb_temp.get(i_imagem).trim().split("alt")[0].length()-2);
-					 
-					
 				}
 				if(i_preco>0)
 				valor_anuncio = sb_temp.get(i_preco-1).trim().substring(32,  sb_temp.get(i_preco-1).trim().length()).replaceAll("</p>", "");
@@ -211,30 +209,25 @@ public class Captacao
 					categoria = sb_temp.get(i_categoria).trim();	
 				}
 				
-				
-				 
-				
-				
 				p.setData_anuncio(data_anuncio);
-				 
-				 
 				p.setValor(Double.parseDouble(valor_anuncio.contains(".")?valor_anuncio.replace(".", ""):valor_anuncio));
-				
 				p.setCategoria(categoria);
 				
 				if(i_ddd>0)
-				p.setDdd(sb_temp.get(i_ddd).trim().replaceAll("DDD", ""));
+					p.setDdd(sb_temp.get(i_ddd).trim().replaceAll("DDD", ""));
 				
 				if(i_cidade>0)
-				p.setCidade(sb_temp.get(i_cidade).trim().replaceAll(",", ""));
+					p.setCidade(sb_temp.get(i_cidade).trim().replaceAll(",", ""));
 				
 				if(i_estado>0)
-				p.setEstado(sb_temp.get(i_estado).trim().replaceAll(",", ""));
+					p.setEstado(sb_temp.get(i_estado).trim().replaceAll(",", ""));
 			
 				p.setLink(link);
 				p.setTitulo(titulo);
 				p.setImagem(imagem.replaceAll("src=", ""));
+				
 				list.add(p);
+				
 				sb_temp.clear();
 			}
 			
@@ -256,20 +249,21 @@ public class Captacao
 	}
 	
 	
-	public static void executar(int inicio,int fim) throws ClientProtocolException, IOException
+	public static void executar(int inicio,int fim,String link) throws ClientProtocolException, IOException
 	{
 		for(int i = inicio; i <= fim; i++)
 		{
-			consulta("http://sp.olx.com.br/?o=".concat(String.valueOf(i)));
+			// consulta("http://sp.olx.com.br/?o=".concat(String.valueOf(i)));
+			
+			consulta(link.concat(String.valueOf(i)));
 		} 
 	}
 	
 	public static void main(String[] args) throws ClientProtocolException, IOException
-	{		
-		for(int i =2; i <= 800; i++)
-		{
-			consulta("http://sp.olx.com.br/?o=".concat(String.valueOf(i)));
-		} 
+	{	
+		executar(1,2,"http://sp.olx.com.br/sao-paulo-e-regiao/celulares?o=");
+		
+		 
 	} 
 	
 	
