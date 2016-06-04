@@ -32,7 +32,7 @@ import com.processo.leao.verde.util.DBLeao;
 
 public class Atualiar {
  
-	public static void consulta(String url, String identificador,String titulo) throws ClientProtocolException, IOException 
+	public static void consulta(String url, String identificador,String titulo,String descricao) throws ClientProtocolException, IOException 
 	{
 		String USER_AGENT = "Mozilla/5.0";
 
@@ -44,37 +44,48 @@ public class Atualiar {
 		// add request header
 		request.addHeader("User-Agent", USER_AGENT);
 		HttpResponse response = client.execute(request);
-
-		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
-
-		
-		
+ 
 		BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
 		 
 		String linha = "";
 		
 		boolean fim = false;
 		int count = 0;
+		
 		while ((linha = rd.readLine()) != null) 
-		{ 
-			if(linha.contains("foi vendido e o anunciante removeu o anúncio."))
-			{
-				fim = true;
-				break;
-			} 
-			if(linha.contains(titulo))
-			{
-				fim = false;
-				break;
-			}
-			if(count <= 400)
-				break;
+		{
 			
-			count++;
+			if(linha.contains(titulo) || linha.contains("<meta name") || linha.contains("foi vendido e o anunciante removeu o anúncio."))	
+			{
+				if(descricao.equals("null"))
+				{
+					if(linha.contains("<meta name") && linha.contains("description"))
+					{
+						descricao=linha.split("content")[1];
+						descricao=descricao.substring(2, descricao.length()-2);
+						break;
+					}
+							
+				} 
+				 
+			   if(linha.contains("foi vendido e o anunciante removeu o anúncio."))
+			   {
+					fim = true;
+				} 
+				if(linha.contains(titulo))
+				{
+					fim = false;
+				}
+				if(count <= 400 && !descricao.equals("null"))
+					break;
+			}
+			
+			
+			count++; 
 		} 
 		
 		rd.close();
-		update(fim, identificador, nova_url);
+		update(fim, identificador, nova_url,descricao);
 		
 		
 
@@ -83,12 +94,26 @@ public class Atualiar {
 	
 	public static void executar(int inicio , int fim) throws Exception
 	{
-		ResultSet rt  = DBLeao.select("select p.identificador, p.link , p.titulo from produtos p where p.id_produto >  ".concat(String.valueOf(inicio)).concat(" and id_produto < ").concat(String.valueOf(fim)));
+		ResultSet rt  = DBLeao.select("select p.identificador, p.link , p.titulo, p.descricao from produtos_ p where p.id >  ".concat(String.valueOf(inicio)));
+		
+		
+		
+		//ResultSet rt  = DBLeao.select(" select * from produtos_ p where p.identificador like '%-%'");
+		int contador = 0 ;
+	 
 		
 		while (rt.next())
 		{
 			System.out.println(rt.getString("identificador"));
-			 consulta(rt.getString("link"), rt.getString("identificador"), rt.getString("titulo"));
+		
+			long tempoInicial = System.currentTimeMillis();
+			
+			consulta(rt.getString("link"), rt.getString("identificador"), rt.getString("titulo"), rt.getString("descricao"));
+			
+			contador++;
+		
+			System.out.println("Foram Atualizados :"+contador );
+			System.out.println( new SimpleDateFormat("mm:ss.SSS").format(new Date( System.currentTimeMillis() - tempoInicial)) );
 		}
 		
 		
@@ -96,7 +121,7 @@ public class Atualiar {
 		  
 	} 
 	
-	private static void update(boolean fim, String identificador,String url ) {
+	private static void update(boolean fim, String identificador,String url,String descricao ) {
 		 
 	 	
 		Date date = new  Date(); 
@@ -104,8 +129,10 @@ public class Atualiar {
 		  
 		StringBuffer d = new StringBuffer();
  
-		d.append("update produtos set `link` = '"+url+"', `fim` = '");
+		d.append("update produtos_ set   `fim` = '");
 		d.append(fim?"Sim":"Nao");
+		d.append("', `descricao`= '").append(descricao);
+		d.append("', `identificador`= '").append(identificador.substring(1,identificador.length()));
 		d.append("',`data_hoje`='").append( new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(date));
 		d.append("' where identificador = '").append(identificador).append("'");
 		
