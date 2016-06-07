@@ -235,6 +235,11 @@ public class Captacao
 		
 		buf.clear();
 		 
+		
+		System.out.println("Foram encontrados "+list.size()+" anuncios");
+		System.out.println("\n\n");
+		
+		System.out.println("Iniciando Gravação");
 		for(Produto p : list )
 		{
 			System.out.println(p.getLink());	
@@ -299,7 +304,7 @@ public class Captacao
 		}
 		catch (Exception e)
 		{
-				System.out.println(e.getMessage());
+				System.out.println("Erro:"+e.getMessage());
 			e.printStackTrace();
 		}
 		

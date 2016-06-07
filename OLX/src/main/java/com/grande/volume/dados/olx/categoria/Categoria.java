@@ -25,6 +25,7 @@ import com.processo.leao.verde.util.DBLeao;
 public class Categoria 
 {	
 	protected static ArrayList<Categoria_> categorias_;
+	protected static ArrayList<String> link_categorias;
 	
 	public static void CarregaCategoria() throws Exception
 	{
@@ -34,12 +35,14 @@ public class Categoria
 	protected static ArrayList<Categoria_> carregaCategoria() throws Exception
 	{
 		ArrayList<Categoria_> categorias_ = new ArrayList<Categoria_>();
-		 
-		ResultSet rs = DBLeao.select("select C.ID,C.NOME from categoria c");
+		link_categorias = new ArrayList<String>();
+		
+		ResultSet rs = DBLeao.select("select c.id,c.nome,c.link from categoria c where c.ligado = 1");
 		
 		while (rs.next())
 		{
 			categorias_.add(new Categoria_(rs.getInt("id"), rs.getString("nome")));
+			link_categorias.add(rs.getString("link"));
 		}
 		
 		rs.close();
@@ -47,6 +50,10 @@ public class Categoria
 		return categorias_;
 	}
 	
+	public static ArrayList<String> getLink_categorias() {
+		return link_categorias;
+	}
+
 	public static int getCategoria(String SCategoria) throws Exception
 	{
 		int id=-1;

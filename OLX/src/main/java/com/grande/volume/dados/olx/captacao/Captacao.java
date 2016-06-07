@@ -1,18 +1,13 @@
 package com.grande.volume.dados.olx.captacao;
 
 import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.HttpClientBuilder;
-
 import com.grande.volume.dados.olx.categoria.Categoria;
 import com.grande.volume.dados.olx.produto.Produto;
+import com.grande.volume.dados.olx.util.HtmlConexao;
 import com.processo.leao.verde.util.DBLeao;
 
 
@@ -50,40 +45,29 @@ import com.processo.leao.verde.util.DBLeao;
 
 public class Captacao
 {
-
+	
+	
+	
+	private static Date date = new  Date();
+	private static SimpleDateFormat formato_data = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+	
 	@SuppressWarnings("deprecation")
-	public static void consulta(String url) throws Exception{
-		
-		
-		
-		String USER_AGENT = "Mozilla/5.0";
-		
-
-		HttpClient client = HttpClientBuilder.create().build();
-		HttpGet request = new HttpGet(url);
-
-		// add request header
-		request.addHeader("User-Agent", USER_AGENT);
-		HttpResponse response = client.execute(request);
-
-		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
-
-		BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-
+	public static void consulta(String url) throws Exception
+	{ 		
+  
 		String linha = "";
-
-		//BufferedWriter buffWrite = new BufferedWriter( new FileWriter(testefeliz.class.getResource("").getFile().toString().concat("NewFile.html")));
+ 
 		ArrayList<Produto> list = new ArrayList<Produto>();
+
 		ArrayList<String> buf = new ArrayList<String>();
-		
-		
+		 
+		BufferedReader	rd	= HtmlConexao.conectar(url);
+		 
 		while ((linha = rd.readLine()) != null)
 		{
-			buf.add(linha.concat(" \n")); 
-		//	buffWrite.append(linha.concat(" \n"));
+			buf.add(linha.concat(" \n"));  
 		}
-		
-		//buffWrite.close();
+		 
 		
 		String link 		= null,
 			titulo 			= null, 
@@ -114,12 +98,10 @@ public class Captacao
 						i_data 		= 0,
 						i_hora 		= 0;
 				
-				String validator="",data_anuncio =
-				null ;
+				String validator="",data_anuncio = 	null ;
 				
 				while(ent)
-				{
-					 					
+				{ 
 						validator=buf.get(i+indice);
 						
 						
@@ -156,81 +138,46 @@ public class Captacao
 								i_data=sb_temp.size();
 								i_hora=sb_temp.size()+1;
 							}
-						}
-						 
+						}  
 					
 					indice++;
-				}
-				
+				} 
 				
 				Produto p = new Produto();
-				 
-				String link_temp = sb_temp.get(1).trim().split("title")[0];
-				link   = sb_temp.get(1).trim().substring(157,link_temp.length()-2);
+		 
+				link   = sb_temp.get(1).trim().substring(157,sb_temp.get(1).trim().split("title")[0].length()-2); 
 				
-				if(i_titulo>0)
-				titulo = sb_temp.get(i_titulo).trim();
-			
-				if(i_imagem>0)
-				{
-					imagem = sb_temp.get(i_imagem).trim().contains("sem foto")?"Sem Foto":sb_temp.get(i_imagem).trim().split("alt")[0].substring(24,sb_temp.get(i_imagem).trim().split("alt")[0].length()-2);
-					 
-					
-				}
-				if(i_preco>0)
-				valor_anuncio = sb_temp.get(i_preco-1).trim().substring(32,  sb_temp.get(i_preco-1).trim().length()).replaceAll("</p>", "");
+				titulo =(i_titulo>0)? sb_temp.get(i_titulo).trim():"";
+
+				imagem = (i_imagem>0)?sb_temp.get(i_imagem).trim().contains("sem foto")?"Sem Foto":sb_temp.get(i_imagem).trim().split("alt")[0].substring(24,sb_temp.get(i_imagem).trim().split("alt")[0].length()-2):"";
+			 	
+				valor_anuncio =(i_preco > 0)? sb_temp.get(i_preco-1).trim().substring(32,  sb_temp.get(i_preco-1).trim().length()).replaceAll("</p>", ""):"";
+				 
 				
 				if(i_data>0)
 				{
 					data =  sb_temp.get(i_data).trim().substring(22, sb_temp.get(i_data).trim().length()).replaceAll("</p>", "");
+					
 					hora = 	sb_temp.get(i_hora).trim().substring(22, sb_temp.get(i_hora).trim().length()).replaceAll("</p>", "");
-
-					Date date = new  Date();
-					SimpleDateFormat formato_data = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-					
-					
-					 
+ 
 					date.setHours(Integer.parseInt(hora.substring(0, 2)));
+					
 					date.setMinutes(Integer.parseInt(hora.substring(3, 5)));
-					
-					 
-					
-					if(data.equalsIgnoreCase("HOJE"))
-					{
-						data_anuncio =formato_data.format(date);
-					}
-					  data_anuncio = data.equalsIgnoreCase("HOJE")?formato_data.format(date):formato_data.format(date);
-					
-				 
+
+					data_anuncio = data.equalsIgnoreCase("HOJE")?formato_data.format(date):formato_data.format(date);
+			 
 				}
-				
-				if(data.equals("Hoje"))
-						System.out.println(data);
-
-
-
-				if(i_categoria>0)
-				{
-					categoria = sb_temp.get(i_categoria).trim();	
-				}
-				
-				
+			  
+			 	
+				categoria = (i_categoria>0)? sb_temp.get(i_categoria).trim():"";	
 				 
-				
-				
 				p.setData_anuncio(data_anuncio); 
+				valor_anuncio=valor_anuncio.trim().equals("")?"0":valor_anuncio;
 				p.setValor(Double.parseDouble(valor_anuncio.contains(".")?valor_anuncio.replace(".", ""):valor_anuncio));
 			 	p.setCategoria(Categoria.getCategoria(categoria));
-				
-				if(i_ddd>0)
-				p.setDdd(sb_temp.get(i_ddd).trim().replaceAll("DDD", ""));
-				
-				if(i_cidade>0)
-				p.setCidade(sb_temp.get(i_cidade).trim().replaceAll(",", ""));
-				
-				if(i_estado>0)
-				p.setEstado(sb_temp.get(i_estado).trim().replaceAll(",", ""));
-			
+				p.setDdd((i_ddd>0)?sb_temp.get(i_ddd).trim().replaceAll("DDD", ""):"");
+				p.setCidade((i_cidade>0)?sb_temp.get(i_cidade).trim().replaceAll(",", ""):"");
+				p.setEstado((i_estado>0)?sb_temp.get(i_estado).trim().replaceAll(",", ""):"");
 				p.setLink(link);
 				p.setTitulo(titulo);
 				p.setImagem(imagem.replaceAll("src=", ""));
@@ -249,6 +196,7 @@ public class Captacao
 		 
 		for(Produto p : list )
 		{
+			System.out.println("---------------Insert into ---------------");
 			System.out.println(p.getLink());	
 			
 			System.out.println(p.getTitulo());
@@ -256,6 +204,9 @@ public class Captacao
 			insert(p);
 		}
 
+		
+		DBLeao.sair();
+		
 		list.clear();
 		
 	}
@@ -265,19 +216,33 @@ public class Captacao
 	{
 		
 		Categoria.CarregaCategoria();
+	
 		for(int i = inicio; i <= fim; i++)
 		{
 			consulta("http://sp.olx.com.br/?o=".concat(String.valueOf(i)));
 		} 
 	}
 	
+	public static void executar(int inicio,int fim,String link) throws Exception
+	{
+		//Categoria.CarregaCategoria();
+		for(int i = inicio; i <= fim; i++)
+		{  
+			consulta(link.concat(String.valueOf(i)));
+		} 
+	}
+	
 	public static void main(String[] args) throws Exception
 	{		
 		Categoria.CarregaCategoria();
-		for(int i =2; i <= 800; i++)
+
+		ArrayList<String> lista_link = Categoria.getLink_categorias();
+		
+		for(String link:lista_link)
 		{
-			consulta("http://sp.olx.com.br/?o=".concat(String.valueOf(i)));
-		} 
+			executar(2, 200, link);	
+		}
+		
 	} 
 	
 	
@@ -288,11 +253,11 @@ public class Captacao
 		
 		
 		d.append("  INSERT INTO `produtos_` ").append(" \n "); 
-		d.append(" (`id`, `identificador`, `valor`, `data_anuncio`, `categoria`, `link`, ").append(" \n "); 
+		d.append(" (`id`, `identificador`,`atualizando`, `valor`, `data_anuncio`, `categoria`, `link`, ").append(" \n "); 
 		d.append("  `titulo`, `imagem`, `descricao`, `contato`, `estado`,  ").append(" \n ");
 		d.append("  `cidade`, `ddd`,`fim`)  ").append(" \n ");
 		d.append(" 	VALUES ((select nextval('MovieSeq') ),  ").append(" \n ");
-		d.append(" '").append(p.getIdentificador()).append("',   ").append(" \n ");
+		d.append(" '").append(p.getIdentificador()).append("', 0,  ").append(" \n ");
 		d.append("  ").append(p.getValor()).append(",  ").append(" \n "); 
 		d.append("  '").append(p.getData_anuncio()).append("',   ").append(" \n ");
 		d.append("  ").append(p.getCategoria()).append(",   ").append(" \n ");
@@ -314,7 +279,7 @@ public class Captacao
 		catch (Exception e)
 		{
 				System.out.println(e.getMessage());
-			e.printStackTrace();
+			 
 		}
 		
 	}
