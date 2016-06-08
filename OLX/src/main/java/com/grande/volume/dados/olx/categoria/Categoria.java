@@ -71,6 +71,24 @@ public class Categoria
 		return id==-1?insertCategoria(SCategoria) : id;
 	}
 	
+	
+	public static int isCategoria(String SCategoria) throws Exception
+	{
+		int id=-1;
+		
+		for(Categoria_ c : categorias_)
+		{
+			if(c.getNome().equalsIgnoreCase(SCategoria))
+			{
+				id=c.getId();
+				 
+				break;
+			}
+		}
+		
+		return id;
+	}
+	
 	protected static int insertCategoria(String nome) throws Exception
 	{
 		String query = "INSERT INTO  `categoria` ( `id`,`nome`) VALUES (".concat(String.valueOf(categorias_.size()+1)).concat(",'".concat(nome).concat("');"));

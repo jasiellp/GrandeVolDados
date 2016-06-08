@@ -11,6 +11,7 @@ import java.util.Date;
 
 import org.apache.http.client.ClientProtocolException;
 
+import com.grande.volume.dados.olx.categoria.Categoria;
 import com.grande.volume.dados.olx.util.HtmlConexao;
 import com.processo.leao.verde.util.DBLeao;
 
@@ -33,7 +34,7 @@ public class Atualiar
 {
 
 	
-	private final static int NUM_ATUALIZACAO = 1000;
+	private final static int NUM_ATUALIZACAO = 10000;
 	
 	public static Atualizacao consulta(String url, String identificador,String titulo,String descricao) throws ClientProtocolException, IOException, CloneNotSupportedException, URISyntaxException 
 	{ 
@@ -176,8 +177,10 @@ public class Atualiar
 			if(atu.isFim())
 			{
 				sim++;
+				String[] Sm = atu.getUrl().replace("/", "jasiel").split("jasiel");
 				  sb.append("update produtos_ set   `fim` = '");
 				  sb.append(atu.isFim()?"Sim":"Nao");
+				  sb.append("', `categoria`= '").append(Categoria.getCategoria(Sm[Sm.length-2])); 
 				  sb.append("', `descricao`= '").append(atu.getDescricao()); 
 				  sb.append("',`data_hoje`='").append( new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new  Date()));
 				  sb.append("' where identificador = '").append(atu.getIdentificador()).append("';");

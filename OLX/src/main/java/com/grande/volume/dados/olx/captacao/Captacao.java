@@ -93,7 +93,7 @@ public class Captacao
 						i_estado    = 0,
 						i_cidade    = 0,
 						i_ddd 		= 0,
-						i_categoria = 0,
+						 	
 						i_preco     = 0,
 						i_data 		= 0,
 						i_hora 		= 0;
@@ -126,10 +126,7 @@ public class Captacao
 								i_cidade=sb_temp.size()+1;
 								i_ddd=sb_temp.size()+3;
 							}
-							
-							if(validator.contains("text detail-category"))
-								i_categoria=sb_temp.size();
-							
+							 
 							if(validator.contains("OLXad-list-price"))
 								i_preco=sb_temp.size();
 							
@@ -167,14 +164,21 @@ public class Captacao
 					data_anuncio = data.equalsIgnoreCase("HOJE")?formato_data.format(date):formato_data.format(date);
 			 
 				}
-			  
+				String[] Sm = link.replace("/", "jasiel").split("jasiel");
 			 	
-				categoria = (i_categoria>0)? sb_temp.get(i_categoria).trim():"";	
-				 
+				if(Sm[Sm.length-1].contains("-"))
+				{	
+					p.setIdentificador(Sm[Sm.length-1].split("-")[1]);
+				}
+				else
+				{
+					p.setIdentificador(Sm[Sm.length-1]);	
+				}
+				
 				p.setData_anuncio(data_anuncio); 
 				valor_anuncio=valor_anuncio.trim().equals("")?"0":valor_anuncio;
 				p.setValor(Double.parseDouble(valor_anuncio.contains(".")?valor_anuncio.replace(".", ""):valor_anuncio));
-			 	p.setCategoria(Categoria.getCategoria(categoria));
+			 	p.setCategoria(Categoria.getCategoria(Sm[Sm.length-2]));
 				p.setDdd((i_ddd>0)?sb_temp.get(i_ddd).trim().replaceAll("DDD", ""):"");
 				p.setCidade((i_cidade>0)?sb_temp.get(i_cidade).trim().replaceAll(",", ""):"");
 				p.setEstado((i_estado>0)?sb_temp.get(i_estado).trim().replaceAll(",", ""):"");

@@ -8,21 +8,22 @@ import java.sql.Statement;
 
 public class DBLeao
 { 
+	private static Statement stmt_ = null;
+	private static Connection conn;
+	private static PreparedStatement stmt;
+	  
 	public static void Insert(Object query) throws Exception
-	{
-		  Connection conn;
-		  
-		  PreparedStatement stmt;
-		  
+	{ 
 			try
 			{
-				conn = Conexao.abrir();
-				   
+				
+				if(conn == null || conn.isClosed())
+				{ 
+					conn = Conexao.abrir();
+				}
+				
 				stmt = conn.prepareStatement(query.toString());
-				
-				stmt.execute();
-				
-				stmt.close(); 
+				stmt.execute(); 
 				
 			}
 			catch (SQLException  e1)
@@ -34,21 +35,28 @@ public class DBLeao
 	}
 	
 	
-	public static ResultSet select(Object query) throws Exception
+	
+	public static void sair() throws SQLException 
 	{
-		  Connection conn;
-		  Statement stmt = null;
-		  ResultSet rs = null;
-		  
+	
+		if(conn!=null)
+			conn.close();
+		
+		if(stmt!=null)
+			stmt.close();
+		
+		if(stmt_!=null)
+			stmt_.close();
+	}
+	
+	public static ResultSet select(Object query) throws Exception
+	{ 
 			try
-			{
-				conn = Conexao.abrir();
-				   
-				 stmt = conn.createStatement();
-				
-				 rs = stmt.executeQuery(query.toString());
-				 
-				//  stmt.close(); 
+			{ 
+				if(conn==null  || conn.isClosed())
+				{ 
+					conn = Conexao.abrir();	
+				}
 				
 			}
 			catch (SQLException  e1)
@@ -56,7 +64,7 @@ public class DBLeao
 					System.out.println(e1.getSQLState());
 				
 			}
-			return rs;
-			 
+			
+			return conn.createStatement().executeQuery(query.toString());
 	}
 }
